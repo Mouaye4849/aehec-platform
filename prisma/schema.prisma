@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Result {
+  id              Int      @id @default(autoincrement())
+
+  numero          String   @unique
+  nomFr           String
+  nomAr           String?
+
+  decision        String
+  moyenne         Float?
+  serie           String?
+
+  dateNaissance   String?
+
+  lieuNaissanceFr String?
+  lieuNaissanceAr String?
+
+  wilayaFr        String?
+  wilayaAr        String?
+
+  centreExamenFr  String?
+  centreExamenAr  String?
+
+  etablissementFr String?
+  etablissementAr String?
+
+  createdAt       DateTime @default(now())
+}
+
+model News {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique
+  titleFr     String
+  titleAr     String?
+  excerptFr   String?
+  excerptAr   String?
+  contentFr   String
+  contentAr   String?
+  imageUrl    String?
+  publishedAt DateTime @default(now())
+}
+
+model MotivationalMessage {
+  id        Int     @id @default(autoincrement())
+  messageFr String
+  messageAr String?
+  active    Boolean @default(true)
+}
+
+model ExecutiveMember {
+  id            Int      @id @default(autoincrement())
+  nomFr         String
+  nomAr         String?
+  posteFr       String
+  posteAr       String?
+  photoUrl      String?
+  biographieFr  String?
+  biographieAr  String?
+  ordre         Int      @default(0)
+  createdAt     DateTime @default(now())
+}
+
+model Scholarship {
+  id            Int       @id @default(autoincrement())
+  titleFr       String
+  titleAr       String?
+  descriptionFr String
+  descriptionAr String?
+  deadline      DateTime?
+  link          String?
+  active        Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+}
+
+model Resource {
+  id            Int      @id @default(autoincrement())
+  titleFr       String
+  titleAr       String?
+  descriptionFr String?
+  descriptionAr String?
+  category      String?
+  fileUrl       String?
+  link          String?
+  createdAt     DateTime @default(now())
+}
