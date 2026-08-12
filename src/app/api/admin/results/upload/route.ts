@@ -3,6 +3,11 @@ import * as XLSX from "xlsx";
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
+// Bulk imports (tens of thousands of rows, chunked at 1000) can take well
+// past the platform's un-configured default on some Vercel plans/projects.
+// Set explicitly rather than relying on whatever the account default is.
+export const maxDuration = 300;
+
 const CHUNK_SIZE = 1000;
 
 // Same column mapping as scripts/import-results.ts, kept in sync by hand.
