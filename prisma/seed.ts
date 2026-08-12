@@ -20,7 +20,7 @@ const executiveMembers = [
     },
     {
         id: 2,
-        nomFr: "Eslem Saadna El Hadj Ahmed",
+        nomFr: "Isselmou Saadna El Hadj Ahmed",
         nomAr: "اسلم سعدن الحاج أحمد",
         posteFr: "Premier Vice-Président",
         posteAr: "نائب أول",
@@ -29,7 +29,7 @@ const executiveMembers = [
     },
     {
         id: 3,
-        nomFr: "Sakina Mohamed Mohamed Sidi",
+        nomFr: "Soukeina Mohamed Mohamed Sidi",
         nomAr: "سكينة محمد محمد سيدي",
         posteFr: "Deuxième Vice-Présidente",
         posteAr: "نائب ثاني",
@@ -74,7 +74,7 @@ const executiveMembers = [
     },
     {
         id: 8,
-        nomFr: "El Hassen Eleyda Aby",
+        nomFr: "El Houssein Eddi Abye",
         nomAr: "الحسين الدي ابي",
         posteFr: "Coordinateur Général des Cours",
         posteAr: "المنسق العام للدروس",
@@ -92,7 +92,7 @@ const executiveMembers = [
     },
     {
         id: 10,
-        nomFr: "Amagal Mohamed Abdallah Abderrahmane",
+        nomFr: "Amaali Mohamed Abdallah Abderrahmane",
         nomAr: "اماغل محمد عبد الله عبد الرحمن",
         posteFr: "Responsable Culture et Activités",
         posteAr: "مسؤول الثقافة والأنشطة",
@@ -105,6 +105,7 @@ const executiveMembers = [
         nomAr: "أحمدو محمد يحي",
         posteFr: "Responsable du Bénévolat",
         posteAr: "مسؤول العمل التطوعي",
+        photoUrl: "/RDB.jpg",
         ordre: 11,
     },
     {
@@ -112,6 +113,7 @@ const executiveMembers = [
         nomFr: "Khadijetou Mohamed Taghioullah",
         nomAr: "اخديجتن محمد تقي الله",
         posteFr: "Responsable des Finances",
+        photoUrl: "/RDF.jpg",
         posteAr: "مسؤولة المالية",
         ordre: 12,
     },
@@ -121,6 +123,7 @@ const executiveMembers = [
         nomAr: "أجود ابن ناصر",
         posteFr: "Responsable Formation et Développement",
         posteAr: "مسؤول التكوين والتطوير",
+        photoUrl: "/RFD.jpg",
         ordre: 13,
     },
     {
