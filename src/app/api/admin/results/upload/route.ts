@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import * as XLSX from "xlsx";
+import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 
 const CHUNK_SIZE = 1000;
@@ -20,40 +21,19 @@ function num(value: unknown): number | null {
 // produced the workbook. Each list is tried in order; the first alias
 // present on the row wins.
 const ALIASES = {
-    numero: [
-        "NUM_BAC",
-        "Num_Bac",
-        "NODOSS",
-        "Numero"
-    ],
+    numero: ["NUM_BAC", "Num_Bac", "NODOSS", "Numero"],
 
-    nomFr: [
-        "NOM_FR",
-        "Nom_FR",
-        "Nom"
-    ],
+    nomFr: ["NOM_FR", "Nom_FR", "Nom"],
 
-    nomAr: [
-        "NOM_AR"
-    ],
+    nomAr: ["NOM_AR"],
 
-    moyenne: [
-        "MOY_BAC_SESSION",
-        "Moy_Bac",
-        "Moy Bac_Session",
-        "Moyenne"
-    ],
+    decision: ["DECISION", "Decision"],
 
-    dateNaissance: [
-        "DATN",
-        "Date Naiss"
-    ],
+    moyenne: ["MOY_BAC_SESSION", "Moy_Bac", "Moy Bac_Session", "Moyenne"],
 
-    lieuNaissanceAr: [
-        "LIEU_AR",
-        "Lieun_AR",
-        "LIEUNN_AR"
-    ],
+    dateNaissance: ["DATN", "Date Naiss"],
+
+    lieuNaissanceAr: ["LIEU_AR", "Lieun_AR", "LIEUNN_AR"],
 } as const;
 
 function pick(row: Record<string, unknown>, keys: readonly string[]): unknown {
@@ -97,12 +77,15 @@ export async function POST(request: Request) {
         const sheetName = workbook.SheetNames[0];
         const sheet = workbook.Sheets[sheetName];
         rows = XLSX.utils.sheet_to_json<Record<string, unknown>>(sheet);
-    } catch {
+    } catch (error) {
+        console.error("[admin/results/upload] Excel parse error:", error);
         return NextResponse.json(
             { success: false, message: "Fichier Excel invalide ou illisible." },
             { status: 400 }
         );
     }
+
+    console.log(`[admin/results/upload] Lignes lues dans le fichier: ${rows.length}`);
 
     const results = rows
         .map((row) => ({
@@ -133,12 +116,28 @@ export async function POST(request: Request) {
         }))
         .filter((r) => r.numero !== "");
 
+    console.log(`[admin/results/upload] Lignes valides (numero non vide): ${results.length}`);
+
+    if (results.length === 0) {
+        const total = await prisma.result.count();
+        return NextResponse.json({
+            success: true,
+            imported: 0,
+            skipped: 0,
+            total,
+            reason:
+                rows.length === 0
+                    ? "Le fichier Excel ne contient aucune ligne."
+                    : "Aucune ligne valide : la colonne du numéro de dossier (numero) est introuvable ou vide sur toutes les lignes. Vérifiez les en-têtes de colonnes du fichier.",
+        });
+    }
 
     let imported = 0;
 
     try {
         if (replaceAll) {
-            await prisma.result.deleteMany({});
+            const deleted = await prisma.result.deleteMany({});
+            console.log(`[admin/results/upload] Mode remplacement: ${deleted.count} ligne(s) supprimée(s).`);
         }
 
         for (let i = 0; i < results.length; i += CHUNK_SIZE) {
@@ -149,16 +148,50 @@ export async function POST(request: Request) {
             });
             imported += inserted.count;
 
-            const after = await prisma.result.count();
-            console.log("After:", after);
-            console.log("Imported:", imported);
+            console.log(
+                `[admin/results/upload] Lot ${i / CHUNK_SIZE + 1}: ${inserted.count}/${chunk.length} insérées (cumul: ${imported}/${results.length}).`
+            );
         }
-    } catch {
+    } catch (error) {
+        // Log the full Prisma error (code, meta, message) for real debugging,
+        // not just a generic message to the client.
+        if (error instanceof Prisma.PrismaClientKnownRequestError) {
+            console.error(
+                "[admin/results/upload] Prisma error:",
+                error.code,
+                error.message,
+                error.meta
+            );
+        } else {
+            console.error("[admin/results/upload] Import error:", error);
+        }
         return NextResponse.json(
-            { success: false, message: "Échec de l'import en base de données." },
+            {
+                success: false,
+                message: "Échec de l'import en base de données.",
+                error: error instanceof Error ? error.message : String(error),
+            },
             { status: 500 }
         );
     }
 
-    return NextResponse.json({ success: true, imported });
+    const skipped = results.length - imported;
+    const total = await prisma.result.count();
+
+    console.log(
+        `[admin/results/upload] Terminé — importées: ${imported}, ignorées (doublons): ${skipped}, total en base: ${total}.`
+    );
+
+    return NextResponse.json({
+        success: true,
+        imported,
+        skipped,
+        total,
+        ...(imported === 0
+            ? {
+                  reason:
+                      "Aucune ligne insérée : tous les numéros de dossier de ce fichier existent déjà en base (skipDuplicates a tout ignoré).",
+              }
+            : {}),
+    });
 }
