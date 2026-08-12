@@ -20,12 +20,40 @@ function num(value: unknown): number | null {
 // produced the workbook. Each list is tried in order; the first alias
 // present on the row wins.
 const ALIASES = {
-    numero: ["Num_Bac", "NODOSS", "Numero"],
-    nomFr: ["Nom_FR", "NOM_FR", "Nom"],
-    nomAr: ["NOM_AR"],
-    moyenne: ["Moy_Bac", "Moy Bac_Session", "Moyenne"],
-    dateNaissance: ["Date Naiss", "DATN"],
-    lieuNaissanceAr: ["Lieun_AR", "LIEUNN_AR"],
+    numero: [
+        "NUM_BAC",
+        "Num_Bac",
+        "NODOSS",
+        "Numero"
+    ],
+
+    nomFr: [
+        "NOM_FR",
+        "Nom_FR",
+        "Nom"
+    ],
+
+    nomAr: [
+        "NOM_AR"
+    ],
+
+    moyenne: [
+        "MOY_BAC_SESSION",
+        "Moy_Bac",
+        "Moy Bac_Session",
+        "Moyenne"
+    ],
+
+    dateNaissance: [
+        "DATN",
+        "Date Naiss"
+    ],
+
+    lieuNaissanceAr: [
+        "LIEU_AR",
+        "Lieun_AR",
+        "LIEUNN_AR"
+    ],
 } as const;
 
 function pick(row: Record<string, unknown>, keys: readonly string[]): unknown {
@@ -83,7 +111,7 @@ export async function POST(request: Request) {
             nomFr: str(pick(row, ALIASES.nomFr))?.trim() ?? "",
             nomAr: str(pick(row, ALIASES.nomAr)),
 
-            decision: str(row["Decision"])?.trim() ?? "",
+            decision: str(pick(row, ALIASES.decision))?.trim() ?? "",
 
             moyenne: num(pick(row, ALIASES.moyenne)),
 
