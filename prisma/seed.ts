@@ -183,7 +183,7 @@ async function main() {
             id: 1,
             messageFr:
                 "La réussite est la somme de petits efforts répétés jour après jour. Bonne continuation !",
-            messageAr: "النجاح هو مجموع مجهودات صغيرة تتكرر يوما بعد يوم. بالتوفيق!",
+            messageAr: "امن جدّ وجد ومن سار على الدرب وصل.",
             active: true,
         },
     });
