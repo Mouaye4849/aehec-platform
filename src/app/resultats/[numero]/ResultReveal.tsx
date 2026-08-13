@@ -239,6 +239,22 @@ export function ResultReveal({
                     : "bg-gradient-to-b from-brand-surface to-white dark:to-black"
             }`}
         >
+            <button
+                type="button"
+                onClick={() => router.back()}
+                aria-label={t.backAction}
+                title={t.backAction}
+                className={`absolute start-4 top-4 z-20 flex h-11 w-11 items-center justify-center rounded-full backdrop-blur-sm transition-transform active:scale-90 sm:start-6 sm:top-6 ${
+                    isSuccess
+                        ? "bg-white/15 text-white hover:bg-white/25"
+                        : "bg-white/90 text-brand-primary shadow-sm hover:bg-white dark:bg-black/40"
+                }`}
+            >
+                <BackIcon
+                    className={`h-5 w-5 ${locale === "ar" ? "rotate-180" : ""}`}
+                />
+            </button>
+
             {isSuccess && (
                 <>
                     <GridPattern
@@ -431,17 +447,6 @@ export function ResultReveal({
                     </button>
                     <button
                         type="button"
-                        onClick={() => router.back()}
-                        className={`rounded-full px-5 py-2.5 text-sm font-semibold transition-transform active:scale-95 ${
-                            isSuccess
-                                ? "text-white/80 hover:text-white"
-                                : "text-brand-primary/70 hover:text-brand-primary"
-                        }`}
-                    >
-                        {t.backAction}
-                    </button>
-                    <button
-                        type="button"
                         onClick={handleDownload}
                         disabled={isDownloading}
                         className={`rounded-full border px-5 py-2.5 text-sm font-semibold transition-transform active:scale-95 disabled:opacity-60 ${
@@ -551,6 +556,20 @@ function CheckIcon() {
                 d="M5 13l4 4L19 7"
                 stroke="currentColor"
                 strokeWidth={2.5}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+        </svg>
+    );
+}
+
+function BackIcon(props: React.SVGProps<SVGSVGElement>) {
+    return (
+        <svg viewBox="0 0 24 24" fill="none" {...props}>
+            <path
+                d="M15 5l-7 7 7 7"
+                stroke="currentColor"
+                strokeWidth={2.25}
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
