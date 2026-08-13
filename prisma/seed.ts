@@ -110,7 +110,7 @@ const executiveMembers = [
     },
     {
         id: 12,
-        nomFr: "Khadijetou Mohamed Taghioullah",
+        nomFr: "Khadeijtne Mohamed Taghioullah",
         nomAr: "اخديجتن محمد تقي الله",
         posteFr: "Responsable des Finances",
         photoUrl: "/RDF.jpg",
@@ -119,7 +119,7 @@ const executiveMembers = [
     },
     {
         id: 13,
-        nomFr: "Ajoud Ould Nasser",
+        nomFr: "Ajouad Ould Nasser",
         nomAr: "أجود ابن ناصر",
         posteFr: "Responsable Formation et Développement",
         posteAr: "مسؤول التكوين والتطوير",
@@ -144,40 +144,6 @@ async function main() {
             create: member,
         });
     }
-
-    await prisma.news.upsert({
-        where: { slug: "assemblee-generale-2026" },
-        update: {},
-        create: {
-            slug: "assemblee-generale-2026",
-            titleFr: "Assemblée générale annuelle de l'AEHEC",
-            titleAr: "الجمعية العامة السنوية لأيحك",
-            excerptFr:
-                "L'AEHEC a tenu son assemblée générale annuelle pour dresser le bilan de l'année et élire le nouveau comité.",
-            excerptAr:
-                "عقدت جمعية أيحك جمعيتها العامة السنوية لتقييم حصيلة السنة وانتخاب المكتب الجديد.",
-            contentFr:
-                "L'Association des Étudiants du Hodh Ech Chargui a organisé son assemblée générale annuelle, réunissant des dizaines d'étudiants membres. Cette rencontre a permis de dresser le bilan des activités de l'année écoulée et de définir les priorités pour la prochaine.",
-            contentAr:
-                "نظمت جمعية طلاب الحوض الشرقي جمعيتها العامة السنوية التي جمعت العشرات من الطلاب الأعضاء. سمح هذا اللقاء بتقييم حصيلة أنشطة السنة المنقضية وتحديد أولويات السنة القادمة.",
-        },
-    });
-    await prisma.news.upsert({
-        where: { slug: "campagne-soutien-scolaire" },
-        update: {},
-        create: {
-            slug: "campagne-soutien-scolaire",
-            titleFr: "Lancement d'une campagne de soutien scolaire",
-            titleAr: "انطلاق حملة للدعم المدرسي",
-            excerptFr:
-                "Une nouvelle campagne de soutien scolaire est lancée pour accompagner les étudiants en difficulté.",
-            excerptAr: "انطلقت حملة جديدة للدعم المدرسي لمرافقة الطلاب الذين يواجهون صعوبات.",
-            contentFr:
-                "Dans le cadre de sa mission d'accompagnement, l'AEHEC lance une campagne de soutien scolaire destinée aux étudiants en difficulté, avec des séances de tutorat organisées par des étudiants avancés.",
-            contentAr:
-                "في إطار مهمتها في المرافقة، أطلقت جمعية أيحك حملة للدعم المدرسي موجهة للطلاب الذين يواجهون صعوبات، من خلال حصص دعم ينظمها طلاب متقدمون.",
-        },
-    });
 
     await prisma.scholarship.upsert({
         where: { id: 1 },
