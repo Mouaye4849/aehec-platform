@@ -2,8 +2,8 @@
 
 import type { ComponentType } from "react";
 import { CalendarIcon, GroupIcon, ReaderIcon, StarIcon } from "@radix-ui/react-icons";
+import { NumberTicker } from "@/components/magicui/number-ticker";
 import { useLocale } from "@/lib/locale";
-import { useCountUp } from "@/lib/useCountUp";
 
 const TEXT = {
     fr: {
@@ -48,7 +48,12 @@ export function HomeStats() {
             <h2 className="sr-only">{t.title}</h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 sm:gap-6">
                 <StatCard icon={GroupIcon} value={MEMBERS_COUNT} label={t.members} />
-                <StatCard icon={CalendarIcon} value={FOUNDATION_YEAR} label={t.founded} />
+                <StatCard
+                    icon={CalendarIcon}
+                    value={FOUNDATION_YEAR}
+                    label={t.founded}
+                    useGrouping={false}
+                />
                 <PlaceholderCard icon={ReaderIcon} label={t.reviews} placeholder={t.reviewsPlaceholder} />
                 <PlaceholderCard icon={StarIcon} label={t.success} placeholder={t.successPlaceholder} />
             </div>
@@ -60,20 +65,20 @@ function StatCard({
     icon: Icon,
     value,
     label,
+    useGrouping = true,
 }: {
     icon: ComponentType<{ className?: string }>;
     value: number;
     label: string;
+    useGrouping?: boolean;
 }) {
-    const display = useCountUp(value);
-
     return (
         <div className="group rounded-2xl border border-black/10 bg-white p-6 text-center shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-white/10 dark:bg-black">
             <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary transition-colors duration-300 group-hover:bg-brand-primary group-hover:text-white">
                 <Icon className="h-6 w-6" />
             </span>
             <p className="font-heading mt-4 text-3xl font-extrabold text-brand-primary">
-                {display}
+                <NumberTicker value={value} useGrouping={useGrouping} />
             </p>
             <p className="mt-1 text-sm font-medium text-brand-secondary">{label}</p>
         </div>

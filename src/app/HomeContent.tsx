@@ -3,10 +3,6 @@
 import Link from "next/link";
 import type { ExecutiveMember } from "@prisma/client";
 import { useLocale } from "@/lib/locale";
-import {
-    AnnouncementsCarousel,
-    type Announcement,
-} from "@/components/AnnouncementsCarousel";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 import { DotPattern } from "@/components/magicui/dot-pattern";
 import { BlurFade } from "@/components/magicui/blur-fade";
@@ -15,6 +11,7 @@ import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
 import { cn } from "@/lib/utils";
 import { HomeStats } from "@/app/HomeStats";
 import { CommitteePreview } from "@/app/CommitteePreview";
+import { ActivitiesPhotoCloud } from "@/app/ActivitiesPhotoCloud";
 
 function CommitteeIcon(props: React.SVGProps<SVGSVGElement>) {
     return (
@@ -82,38 +79,6 @@ const TEXT = {
         announcementsTitle: "Annonces et activités",
         announcementsLead:
             "Suivez les dernières actualités et initiatives de l'association.",
-        announcementsPrev: "Précédent",
-        announcementsNext: "Suivant",
-        announcements: [
-            {
-                tone: "accent",
-                badge: "Avis important",
-                title: "Ouverture des adhésions",
-                excerpt:
-                    "Nous invitons tous les étudiants du Hodh Ech Chargui souhaitant nous rejoindre à contacter la Rabita via ses canaux officiels.",
-            },
-            {
-                tone: "primary",
-                badge: "Activité",
-                title: "Assemblée générale annuelle",
-                excerpt:
-                    "Une rencontre périodique réunissant les membres pour dresser le bilan des actions et définir les priorités à venir.",
-            },
-            {
-                tone: "secondary",
-                badge: "Soutien académique",
-                title: "Campagne de soutien scolaire",
-                excerpt:
-                    "Une initiative pour accompagner les élèves motivés à travers des séances de tutorat et un suivi personnalisé.",
-            },
-            {
-                tone: "accent",
-                badge: "Annonce",
-                title: "Résultats du Baccalauréat disponibles",
-                excerpt:
-                    "Consultez dès maintenant votre résultat directement sur la plateforme de l'association.",
-            },
-        ] as Announcement[],
         missionTitle: "Notre mission",
         missionText:
             "Nous œuvrons pour accompagner les étudiants dans leur parcours académique, combattre l'ignorance et bâtir une génération éduquée, cultivée et consciente, capable de contribuer au développement de sa région.",
@@ -151,38 +116,6 @@ const TEXT = {
         announcementsTitle: "Announcements & Activities",
         announcementsLead:
             "Follow the association's latest news and initiatives.",
-        announcementsPrev: "Previous",
-        announcementsNext: "Next",
-        announcements: [
-            {
-                tone: "accent",
-                badge: "Important notice",
-                title: "Membership now open",
-                excerpt:
-                    "We invite all students of Hodh Ech Chargui who wish to join us to contact the Rabita through its official channels.",
-            },
-            {
-                tone: "primary",
-                badge: "Activity",
-                title: "Annual general assembly",
-                excerpt:
-                    "A periodic meeting bringing members together to review achievements and set priorities for the period ahead.",
-            },
-            {
-                tone: "secondary",
-                badge: "Academic support",
-                title: "School support campaign",
-                excerpt:
-                    "An initiative to support motivated students through tutoring sessions and personalized follow-up.",
-            },
-            {
-                tone: "accent",
-                badge: "Announcement",
-                title: "Baccalauréat results available",
-                excerpt:
-                    "Check your result now directly on the association's platform.",
-            },
-        ] as Announcement[],
         missionTitle: "Our mission",
         missionText:
             "We work to support students throughout their academic journey, fight ignorance, and build an educated, cultured, and conscious generation capable of contributing to the development of its region.",
@@ -219,37 +152,6 @@ const TEXT = {
         ctaAnnouncements: "شاهد الإعلانات ↓",
         announcementsTitle: "الإعلانات والأنشطة",
         announcementsLead: "تابعوا آخر مستجدات الرابطة ومبادراتها.",
-        announcementsPrev: "السابق",
-        announcementsNext: "التالي",
-        announcements: [
-            {
-                tone: "accent",
-                badge: "إعلان هام",
-                title: "فتح باب الانتساب للرابطة",
-                excerpt:
-                    "ندعو جميع طلاب الحوض الشرقي الراغبين في الانضمام إلينا إلى التواصل معنا عبر القنوات الرسمية للرابطة.",
-            },
-            {
-                tone: "primary",
-                badge: "نشاط",
-                title: "الجمعية العامة السنوية",
-                excerpt:
-                    "لقاء دوري يجمع أعضاء الرابطة لتقييم الإنجازات وتحديد أولويات المرحلة القادمة.",
-            },
-            {
-                tone: "secondary",
-                badge: "دعم أكاديمي",
-                title: "حملة الدعم المدرسي",
-                excerpt:
-                    "مبادرة لمرافقة التلاميذ الراغبين في التفوق عبر حصص دعم ومتابعة شخصية.",
-            },
-            {
-                tone: "accent",
-                badge: "إعلان",
-                title: "نتائج البكالوريا متاحة الآن",
-                excerpt: "بإمكانكم الاطلاع على نتيجتكم مباشرة عبر منصة الرابطة.",
-            },
-        ] as Announcement[],
         missionTitle: "رسالتنا",
         missionText:
             "نسعى في رابطة طلاب الحوض الشرقي إلى مرافقة الطلاب في مسيرتهم الأكاديمية، ومحاربة الجهل، وبناء جيل متعلم ومثقف وواعٍ قادر على المساهمة في تنمية منطقته ووطنه.",
@@ -388,11 +290,7 @@ export function HomeContent({
                             {t.announcementsLead}
                         </p>
                         <div className="mt-6">
-                            <AnnouncementsCarousel
-                                items={t.announcements}
-                                prevLabel={t.announcementsPrev}
-                                nextLabel={t.announcementsNext}
-                            />
+                            <ActivitiesPhotoCloud />
                         </div>
                     </div>
                 </BlurFade>
