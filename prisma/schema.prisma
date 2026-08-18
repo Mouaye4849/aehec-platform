@@ -44,11 +44,14 @@ model News {
   slug        String   @unique
   titleFr     String
   titleAr     String?
+  categoryFr  String?
+  categoryAr  String?
   excerptFr   String?
   excerptAr   String?
   contentFr   String
   contentAr   String?
   imageUrl    String?
+  featured    Boolean  @default(false)
   publishedAt DateTime @default(now())
 }
 

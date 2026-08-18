@@ -176,6 +176,29 @@ async function main() {
         },
     });
 
+    await prisma.news.upsert({
+        where: { slug: "revision-ete-2026" },
+        update: {},
+        create: {
+            slug: "revision-ete-2026",
+            titleFr: "Lancement de la révision estivale 2026",
+            titleAr: "انطلاق المراجعة الصيفية 2026",
+            categoryFr: "Annonce",
+            categoryAr: "إعلان",
+            excerptFr:
+                "L'Association des Étudiants du Hodh Ech Chargui annonce le lancement de la révision estivale pour les élèves du Baccalauréat, encadrée par des enseignants distingués et couvrant l'ensemble des filières.",
+            excerptAr:
+                "تعلن رابطة طلاب الحوض الشرقي عن انطلاق المراجعة الصيفية لفائدة طلاب البكالوريا بإشراف أساتذة متميزين ومراجعة شاملة لمختلف الشعب.",
+            contentFr:
+                "L'Association des Étudiants du Hodh Ech Chargui annonce le lancement de sa révision estivale ce mercredi, une initiative que l'association organise chaque année pour accompagner les étudiants du Hodh Ech Chargui et les aider à bien se préparer afin d'obtenir les meilleurs résultats à l'examen du Baccalauréat.\n\n📚 La révision couvre l'ensemble des filières du Baccalauréat, à travers une révision complète et des cours intensifs et organisés, encadrés par des enseignants distingués.\n\n🎯 Pour bénéficier de cette révision et en savoir plus, veuillez nous contacter au numéro :\n📞 42223329\n\nAssociation des Étudiants du Hodh Ech Chargui\nSolidarité · Excellence · Créativité",
+            contentAr:
+                "تعلن رابطة طلاب الحوض الشرقي عن انطلاق المراجعة الصيفية يوم الأربعاء، وهي المراجعة التي دأبت الرابطة على تنظيمها لصالح طلاب الحوض الشرقي، حرصًا منها على دعمهم ومساعدتهم على الاستعداد الجيد وتحقيق أفضل النتائج في امتحان البكالوريا.\n📚 وتشمل المراجعة مختلف شعب البكالوريا، من خلال مراجعة شاملة ودروس مكثفة ومنظمة، بإشراف أساتذة متميزين.\n🎯 للاستفادة من هذه المراجعة ومعرفة تفاصيلها، يرجى التواصل على الرقم:\n📞 42223329\nرابطة طلاب الحوض الشرقي\nتضامن • تميز • إبداع",
+            imageUrl: "/news/revision-ete-2026.jpg",
+            featured: true,
+            publishedAt: new Date("2026-08-18"),
+        },
+    });
+
     await prisma.motivationalMessage.upsert({
         where: { id: 1 },
         update: {},

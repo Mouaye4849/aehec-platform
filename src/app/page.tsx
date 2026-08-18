@@ -7,5 +7,15 @@ export default async function Home() {
         take: 6,
     });
 
-    return <HomeContent committeePreview={committeePreview} />;
+    const featuredNews = await prisma.news.findFirst({
+        where: { featured: true },
+        orderBy: { publishedAt: "desc" },
+    });
+
+    return (
+        <HomeContent
+            committeePreview={committeePreview}
+            featuredNews={featuredNews}
+        />
+    );
 }

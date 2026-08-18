@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import type { ExecutiveMember } from "@prisma/client";
+import type { ExecutiveMember, News } from "@prisma/client";
 import { useLocale } from "@/lib/locale";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
 import { DotPattern } from "@/components/magicui/dot-pattern";
@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import { HomeStats } from "@/app/HomeStats";
 import { CommitteePreview } from "@/app/CommitteePreview";
 import { ActivitiesPhotoCloud } from "@/app/ActivitiesPhotoCloud";
+import { FeaturedNewsCard } from "@/app/FeaturedNewsCard";
 
 function CommitteeIcon(props: React.SVGProps<SVGSVGElement>) {
     return (
@@ -181,8 +182,10 @@ const TEXT = {
 
 export function HomeContent({
     committeePreview,
+    featuredNews,
 }: {
     committeePreview: ExecutiveMember[];
+    featuredNews: News | null;
 }) {
     const { locale } = useLocale();
     const t = TEXT[locale];
@@ -289,6 +292,11 @@ export function HomeContent({
                         <p className="mt-1 text-zinc-600 dark:text-zinc-400">
                             {t.announcementsLead}
                         </p>
+                        {featuredNews && (
+                            <div className="mt-6">
+                                <FeaturedNewsCard item={featuredNews} />
+                            </div>
+                        )}
                         <div className="mt-6">
                             <ActivitiesPhotoCloud />
                         </div>

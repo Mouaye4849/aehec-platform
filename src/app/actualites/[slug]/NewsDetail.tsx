@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import type { News } from "@prisma/client";
 import { localize, useLocale } from "@/lib/locale";
@@ -23,7 +24,23 @@ export function NewsDetail({ article }: { article: News }) {
             >
                 {t.back}
             </Link>
-            <div className="mt-6">
+            {article.imageUrl && (
+                <div className="relative mt-6 h-56 w-full overflow-hidden rounded-xl sm:h-80">
+                    <Image
+                        src={article.imageUrl}
+                        alt={localize(locale, article.titleFr, article.titleAr)}
+                        fill
+                        className="object-cover"
+                        priority
+                    />
+                </div>
+            )}
+            <div className="mt-6 flex flex-wrap items-center gap-2">
+                {(article.categoryFr || article.categoryAr) && (
+                    <MetaPill icon="tag">
+                        {localize(locale, article.categoryFr ?? "", article.categoryAr)}
+                    </MetaPill>
+                )}
                 <MetaPill icon="calendar">
                     {new Date(article.publishedAt).toLocaleDateString(
                         locale === "ar"

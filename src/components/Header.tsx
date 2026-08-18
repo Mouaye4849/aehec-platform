@@ -22,6 +22,10 @@ export function Header() {
         { href: "/resultats", label: t.results },
     ];
 
+    // Mobile navigation includes an extra Contact entry; desktop nav is
+    // left untouched and keeps using `links` above.
+    const mobileLinks = [...links, { href: "/contact", label: t.contact }];
+
     return (
         <header className="sticky top-0 z-30 bg-white px-3 pt-3 md:border-b md:border-black/10 md:bg-brand-surface md:px-0 md:pt-0">
             <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 rounded-full bg-brand-surface px-2.5 py-2.5 shadow-md ring-1 ring-black/5 sm:px-4 md:gap-4 md:rounded-none md:bg-transparent md:px-6 md:py-4 md:shadow-none md:ring-0">
@@ -73,12 +77,12 @@ export function Header() {
                 {locale === "ar" ? (
                     <div className="flex shrink-0 items-center gap-2">
                         <LanguageToggle />
-                        <MobileMenu links={links} />
+                        <MobileMenu links={mobileLinks} />
                     </div>
                 ) : (
                     <div className="ml-auto flex shrink-0 items-center gap-2">
                         <LanguageToggle />
-                        <MobileMenu links={links} />
+                        <MobileMenu links={mobileLinks} />
                     </div>
                 )}
             </div>

@@ -90,6 +90,7 @@ export const UI_TEXT = {
             news: "Actualités",
             resources: "Ressources",
             results: "Résultats",
+            contact: "Contact",
         },
         footer: {
             contact: "Contact",
@@ -109,6 +110,7 @@ export const UI_TEXT = {
             news: "News",
             resources: "Resources",
             results: "Results",
+            contact: "Contact",
         },
         footer: {
             contact: "Contact",
@@ -128,6 +130,7 @@ export const UI_TEXT = {
             news: "الأخبار والأنشطة",
             resources: "موارد الدعم",
             results: "النتائج",
+            contact: "اتصل بنا",
         },
         footer: {
             contact: "اتصل بنا",
