@@ -57,6 +57,7 @@
   --font-mono: var(--font-geist-mono);
   --animate-aurora: aurora 8s ease-in-out infinite alternate;
   --animate-gradient: gradient 8s linear infinite;
+  --animate-fade-in-down: fade-in-down 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -68,7 +69,10 @@
 }
 
 body {
-  background: var(--background);
+  /* Transparent so the fixed <SiteBackground> layer (rendered behind it,
+     see layout.tsx) shows through — body no longer paints its own base
+     surface color. */
+  background: transparent;
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
@@ -85,6 +89,17 @@ html[dir="rtl"] body {
   100% {
     transform: translateY(110vh) rotate(540deg);
     opacity: 0;
+  }
+}
+
+@keyframes fade-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

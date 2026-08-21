@@ -12,7 +12,7 @@ export function LanguageToggle() {
     const { locale, setLocale } = useLocale();
 
     return (
-        <div className="flex items-center gap-0.5 rounded-full border border-brand-primary/25 bg-white p-0.5 dark:bg-black/20">
+        <div className="flex items-center gap-0.5 rounded-full border border-black/[0.06] bg-white/70 p-0.5 shadow-sm backdrop-blur-sm dark:bg-black/20">
             {SEGMENTS.map((segment) => {
                 const active = segment.value === locale;
                 return (
@@ -21,9 +21,9 @@ export function LanguageToggle() {
                         type="button"
                         onClick={() => setLocale(segment.value)}
                         aria-pressed={active}
-                        className={`rounded-full px-2 py-1 text-xs font-bold transition-colors md:px-3 ${
+                        className={`rounded-full px-2 py-1 text-xs font-bold transition-all duration-300 md:px-3 ${
                             active
-                                ? "bg-brand-primary text-white"
+                                ? "bg-brand-primary text-white shadow-[0_2px_8px_-2px_rgba(28,77,51,0.5)]"
                                 : "text-brand-primary/60 hover:text-brand-primary"
                         }`}
                     >

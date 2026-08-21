@@ -4,15 +4,34 @@ import type { SVGProps } from "react";
 import Image from "next/image";
 import { Mail } from "lucide-react";
 import { UI_TEXT, useLocale } from "@/lib/locale";
+import { FACEBOOK_URL, WHATSAPP_URL } from "@/lib/contact";
 
 const TEXT = {
-    fr: { facebook: "Facebook", whatsapp: "WhatsApp", email: "E-mail" },
-    en: { facebook: "Facebook", whatsapp: "WhatsApp", email: "Email" },
-    ar: { facebook: "فيسبوك", whatsapp: "واتساب", email: "البريد الإلكتروني" },
+    fr: {
+        facebook: "Facebook",
+        whatsapp: "WhatsApp",
+        email: "E-mail",
+        creditPrefix: "Conçu et développé par",
+        creditName: "Moulaye Elhacen Selam",
+    },
+    en: {
+        facebook: "Facebook",
+        whatsapp: "WhatsApp",
+        email: "Email",
+        creditPrefix: "Designed and developed by",
+        creditName: "Moulaye Elhacen Selam",
+    },
+    ar: {
+        facebook: "فيسبوك",
+        whatsapp: "واتساب",
+        email: "البريد الإلكتروني",
+        creditPrefix: "تصميم وتطوير الموقع:",
+        creditName: "مولاي الحسن سلام",
+    },
 } as const;
 
-const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=100083315438426";
-const WHATSAPP_URL = "https://wa.me/XXXXXXXXXXX";
+const DEVELOPER_URL: string | null = null;
+
 const EMAIL_ADDRESS = "contact@example.com";
 
 export function Footer() {
@@ -70,6 +89,26 @@ export function Footer() {
                             </a>
                         ))}
                     </div>
+                </div>
+
+                <div className="mt-4 border-t border-white/5 pt-3 text-center">
+                    <p className="text-[11px] text-white/40">
+                        {social.creditPrefix}{" "}
+                        {DEVELOPER_URL ? (
+                            <a
+                                href={DEVELOPER_URL}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="font-medium text-white/50 transition-colors duration-300 hover:text-white/80"
+                            >
+                                {social.creditName}
+                            </a>
+                        ) : (
+                            <span className="font-medium text-white/50 transition-colors duration-300 hover:text-white/80">
+                                {social.creditName}
+                            </span>
+                        )}
+                    </p>
                 </div>
             </div>
         </footer>

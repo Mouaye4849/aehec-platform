@@ -12,10 +12,15 @@ export default async function Home() {
         orderBy: { publishedAt: "desc" },
     });
 
+    const activities = await prisma.activity.findMany({
+        orderBy: [{ date: { sort: "desc", nulls: "last" } }, { order: "asc" }],
+    });
+
     return (
         <HomeContent
             committeePreview={committeePreview}
             featuredNews={featuredNews}
+            activities={activities}
         />
     );
 }

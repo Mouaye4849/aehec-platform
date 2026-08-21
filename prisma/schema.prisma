@@ -55,6 +55,29 @@ model News {
   publishedAt DateTime @default(now())
 }
 
+enum ActivityType {
+  ACTIVITY
+  EVENT
+  INITIATIVE
+  WORKSHOP
+  ACHIEVEMENT
+  COMMUNITY_PROJECT
+}
+
+model Activity {
+  id            Int          @id @default(autoincrement())
+  type          ActivityType
+  titleFr       String
+  titleAr       String?
+  descriptionFr String?
+  descriptionAr String?
+  imageUrl      String
+  date          DateTime?
+  featured      Boolean      @default(false)
+  order         Int          @default(0)
+  createdAt     DateTime     @default(now())
+}
+
 model MotivationalMessage {
   id        Int     @id @default(autoincrement())
   messageFr String

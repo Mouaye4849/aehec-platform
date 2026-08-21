@@ -4,6 +4,7 @@ import "./globals.css";
 import { LocaleProvider } from "@/lib/locale";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { SiteBackground } from "@/components/SiteBackground";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} ${notoKufiArabic.variable} ${notoSansArabic.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <SiteBackground />
         <LocaleProvider>
           <Header />
           <main className="flex flex-1 flex-col">{children}</main>

@@ -3,6 +3,7 @@
 import type { SVGProps } from "react";
 import { Mail, MapPin } from "lucide-react";
 import { UI_TEXT, useLocale } from "@/lib/locale";
+import { FACEBOOK_URL, LOCATION, WHATSAPP_URL } from "@/lib/contact";
 
 const TEXT = {
     fr: {
@@ -13,7 +14,6 @@ const TEXT = {
         whatsapp: "WhatsApp",
         email: "E-mail",
         location: "Localisation",
-        locationValue: "Wilaya du Hodh Ech Chargui, Mauritanie",
     },
     en: {
         title: "Contact",
@@ -23,7 +23,6 @@ const TEXT = {
         whatsapp: "WhatsApp",
         email: "Email",
         location: "Location",
-        locationValue: "Hodh Ech Chargui region, Mauritania",
     },
     ar: {
         title: "اتصل بنا",
@@ -33,12 +32,9 @@ const TEXT = {
         whatsapp: "واتساب",
         email: "البريد الإلكتروني",
         location: "الموقع",
-        locationValue: "ولاية الحوض الشرقي، موريتانيا",
     },
 } as const;
 
-const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=100083315438426";
-const WHATSAPP_URL = "https://wa.me/XXXXXXXXXXX";
 const EMAIL_ADDRESS = "contact@example.com";
 
 export function ContactContent() {
@@ -113,7 +109,7 @@ export function ContactContent() {
                             {t.location}
                         </span>
                         <span className="font-semibold text-brand-primary">
-                            {t.locationValue}
+                            {LOCATION[locale]}
                         </span>
                     </span>
                 </div>

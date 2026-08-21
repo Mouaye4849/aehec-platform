@@ -1,10 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import type { ExecutiveMember, News } from "@prisma/client";
+import type { Activity, ExecutiveMember, News } from "@prisma/client";
 import { useLocale } from "@/lib/locale";
 import { AnimatedGradientText } from "@/components/magicui/animated-gradient-text";
-import { DotPattern } from "@/components/magicui/dot-pattern";
 import { BlurFade } from "@/components/magicui/blur-fade";
 import { BorderBeam } from "@/components/magicui/border-beam";
 import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
@@ -13,6 +12,8 @@ import { HomeStats } from "@/app/HomeStats";
 import { CommitteePreview } from "@/app/CommitteePreview";
 import { ActivitiesPhotoCloud } from "@/app/ActivitiesPhotoCloud";
 import { FeaturedNewsCard } from "@/app/FeaturedNewsCard";
+import { ActivitiesShowcase } from "@/app/ActivitiesShowcase";
+import { HomeContactPreview } from "@/app/HomeContactPreview";
 
 function CommitteeIcon(props: React.SVGProps<SVGSVGElement>) {
     return (
@@ -66,6 +67,38 @@ const EXPLORE_ICONS: Record<string, React.ElementType> = {
     "/comite": CommitteeIcon,
     "/ressources": ResourcesIcon,
 };
+
+// Shared "framed section" container used by every homepage section,
+// including the hero. Rounded corners, a subtle border, a soft brand-tinted
+// shadow, and a thin gold accent bar give each section its own
+// clearly-separated, professional panel on top of the site-wide dot-pattern
+// background, instead of the previous plain alternating-band sections.
+// `bodyClassName` lets a caller keep its own pre-existing padding/spacing
+// rhythm (used by the hero, which has a taller vertical rhythm than the
+// other sections) instead of the shared default.
+function SectionCard({
+    children,
+    className,
+    bodyClassName = "px-5 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14",
+}: {
+    children: React.ReactNode;
+    className?: string;
+    bodyClassName?: string;
+}) {
+    return (
+        <div
+            className={cn(
+                "relative overflow-hidden rounded-3xl border border-black/[0.06] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_16px_40px_-20px_rgba(28,77,51,0.22)] dark:border-white/10 dark:bg-black",
+                className
+            )}
+        >
+            <div className="h-[3px] w-full bg-gradient-to-r from-transparent via-brand-accent/60 to-transparent" />
+            <div className={bodyClassName}>
+                {children}
+            </div>
+        </div>
+    );
+}
 
 const TEXT = {
     fr: {
@@ -183,207 +216,196 @@ const TEXT = {
 export function HomeContent({
     committeePreview,
     featuredNews,
+    activities,
 }: {
     committeePreview: ExecutiveMember[];
     featuredNews: News | null;
+    activities: Activity[];
 }) {
     const { locale } = useLocale();
     const t = TEXT[locale];
 
     return (
         <div className="flex flex-1 flex-col">
-            <section
-                className="relative overflow-hidden"
-                style={{
-                    background:
-                        "radial-gradient(ellipse 120% 80% at 14% -10%, #ffffff 0%, #f7f4ec 60%)",
-                }}
-            >
-                {/* Asymmetric green/gold glows, blended (not stacked) with a fade-to-cream
-                    wash in one composited background — different sizes and corners so
-                    they read as organic light sources rather than mirrored stickers. */}
-                <div
-                    className="pointer-events-none absolute inset-0"
-                    style={{
-                        background:
-                            "radial-gradient(620px 380px at 88% 10%, rgba(28,77,51,0.24), transparent 70%), radial-gradient(560px 340px at 8% 90%, rgba(199,167,107,0.22), transparent 72%), linear-gradient(180deg, rgba(247,244,236,0) 0%, rgba(247,244,236,0.55) 100%)",
-                    }}
-                />
-
-                {/* Dot Pattern texture, masked so it's concentrated behind the headline
-                    and fades toward the section edges instead of a flat uniform grid. */}
-                <DotPattern
-                    width={26}
-                    height={26}
-                    cr={1.6}
-                    className="text-brand-primary/25"
-                    style={{
-                        maskImage:
-                            "radial-gradient(circle at 50% 35%, black 0%, black 35%, transparent 80%)",
-                        WebkitMaskImage:
-                            "radial-gradient(circle at 50% 35%, black 0%, black 35%, transparent 80%)",
-                    }}
-                />
-
+            <section className="relative overflow-hidden">
                 <BlurFade inView inViewMargin="-80px" direction="up" offset={16}>
-                    <div className="relative mx-auto flex max-w-6xl flex-col gap-6 px-4 py-14 sm:px-6 sm:py-20">
-                        <p className="text-sm font-semibold uppercase tracking-wide text-brand-secondary">
-                            {t.eyebrow}
-                        </p>
-                        <h1 className="font-heading max-w-2xl text-3xl font-extrabold leading-tight tracking-tight text-brand-primary sm:text-5xl lg:text-6xl">
-                            {t.titlePrefix}
-                            <AnimatedGradientText
-                                colorFrom="var(--brand-accent)"
-                                colorTo="var(--brand-primary)"
-                                speed={0.6}
-                                className="font-extrabold"
-                            >
-                                {t.titleHighlight}
-                            </AnimatedGradientText>
-                            {t.titleSuffix}
-                        </h1>
-                        <p className="max-w-xl text-lg text-brand-primary/80">
-                            {t.lead}
-                        </p>
-                        <div className="flex flex-wrap items-center gap-4 pt-2">
-                            <div className="relative overflow-hidden rounded-full">
-                                <Link
-                                    href="/resultats"
-                                    className="relative block rounded-full bg-brand-accent px-6 py-3 text-sm font-semibold text-brand-primary transition-opacity hover:opacity-90"
-                                >
-                                    {t.ctaResults}
-                                </Link>
-                                <BorderBeam
-                                    size={50}
-                                    duration={8}
-                                    colorFrom="var(--brand-accent)"
-                                    colorTo="var(--brand-primary)"
-                                />
+                    <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
+                        <SectionCard bodyClassName="px-4 py-14 sm:px-6 sm:py-20">
+                            <div className="relative flex flex-col gap-6">
+                                <p className="text-sm font-semibold uppercase tracking-wide text-brand-secondary">
+                                    {t.eyebrow}
+                                </p>
+                                <h1 className="font-heading max-w-2xl text-3xl font-extrabold leading-tight tracking-tight text-brand-primary sm:text-5xl lg:text-6xl">
+                                    {t.titlePrefix}
+                                    <AnimatedGradientText
+                                        colorFrom="var(--brand-accent)"
+                                        colorTo="var(--brand-primary)"
+                                        speed={0.6}
+                                        className="font-extrabold"
+                                    >
+                                        {t.titleHighlight}
+                                    </AnimatedGradientText>
+                                    {t.titleSuffix}
+                                </h1>
+                                <p className="max-w-xl text-lg text-brand-primary/80">
+                                    {t.lead}
+                                </p>
+                                <div className="flex flex-wrap items-center gap-4 pt-2">
+                                    <div className="relative overflow-hidden rounded-full">
+                                        <Link
+                                            href="/resultats"
+                                            className="relative block rounded-full bg-brand-accent px-6 py-3 text-sm font-semibold text-brand-primary transition-opacity hover:opacity-90"
+                                        >
+                                            {t.ctaResults}
+                                        </Link>
+                                        <BorderBeam
+                                            size={50}
+                                            duration={8}
+                                            colorFrom="var(--brand-accent)"
+                                            colorTo="var(--brand-primary)"
+                                        />
+                                    </div>
+                                    <Link
+                                        href="/a-propos"
+                                        className="rounded-full border border-brand-primary/30 px-6 py-3 text-sm font-semibold text-brand-primary transition-colors hover:bg-brand-primary/5"
+                                    >
+                                        {t.ctaAbout}
+                                    </Link>
+                                    <a
+                                        href="#announcements"
+                                        className="text-sm font-semibold text-brand-primary/70 hover:text-brand-primary hover:underline"
+                                    >
+                                        {t.ctaAnnouncements}
+                                    </a>
+                                </div>
                             </div>
-                            <Link
-                                href="/a-propos"
-                                className="rounded-full border border-brand-primary/30 px-6 py-3 text-sm font-semibold text-brand-primary transition-colors hover:bg-brand-primary/5"
-                            >
-                                {t.ctaAbout}
-                            </Link>
-                            <a
-                                href="#announcements"
-                                className="text-sm font-semibold text-brand-primary/70 hover:text-brand-primary hover:underline"
-                            >
-                                {t.ctaAnnouncements}
-                            </a>
-                        </div>
+                        </SectionCard>
                     </div>
                 </BlurFade>
             </section>
 
             <section id="announcements" className="relative overflow-hidden">
-                <DotPattern
-                    width={26}
-                    height={26}
-                    cr={1.6}
-                    className="text-brand-primary/25"
-                />
                 <BlurFade inView inViewMargin="-80px" direction="up" offset={16}>
-                    <div className="relative mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-16">
-                        <h2 className="font-heading text-2xl font-bold text-brand-primary">
-                            {t.announcementsTitle}
-                        </h2>
-                        <p className="mt-1 text-zinc-600 dark:text-zinc-400">
-                            {t.announcementsLead}
-                        </p>
-                        {featuredNews && (
-                            <div className="mt-6">
-                                <FeaturedNewsCard item={featuredNews} />
-                            </div>
-                        )}
-                        <div className="mt-6">
-                            <ActivitiesPhotoCloud />
-                        </div>
-                    </div>
-                </BlurFade>
-            </section>
-
-            <section className="bg-brand-surface">
-                <BlurFade inView inViewMargin="-80px" direction="up" offset={16}>
-                    <div className="mx-auto max-w-4xl px-4 py-10 text-center sm:px-6 sm:py-16">
-                        <h2 className="font-heading text-2xl font-bold text-brand-primary">
-                            {t.missionTitle}
-                        </h2>
-                        <p className="mt-4 leading-relaxed text-zinc-700 dark:text-zinc-300">
-                            {t.missionText}
-                        </p>
-                        <Link
-                            href="/a-propos"
-                            className="mt-4 inline-block text-sm font-semibold text-brand-secondary hover:underline"
-                        >
-                            {t.missionLink}
-                        </Link>
-                    </div>
-                </BlurFade>
-            </section>
-
-            <section className="relative overflow-hidden">
-                <DotPattern
-                    width={26}
-                    height={26}
-                    cr={1.6}
-                    className="text-brand-primary/25"
-                />
-                <BlurFade inView inViewMargin="-80px" direction="up" offset={16}>
-                    <div className="relative mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 sm:py-16">
-                        <HomeStats />
-                    </div>
-                </BlurFade>
-            </section>
-
-            <section className="bg-brand-surface">
-                <BlurFade inView inViewMargin="-80px" direction="up" offset={16}>
-                    <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-                        <div className="mx-auto max-w-2xl text-center">
-                            <h2 className="font-heading text-3xl font-bold text-brand-primary">
-                                {t.exploreTitle}
+                    <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
+                        <SectionCard>
+                            <h2 className="font-heading text-2xl font-bold text-brand-primary">
+                                {t.announcementsTitle}
                             </h2>
-                            <p className="mt-3 text-zinc-600 dark:text-zinc-400">
-                                {t.exploreSubtitle}
+                            <p className="mt-1 text-zinc-600 dark:text-zinc-400">
+                                {t.announcementsLead}
                             </p>
-                        </div>
-                        <BentoGrid className="mt-12 grid-cols-1 auto-rows-[11rem] gap-4 md:grid-cols-3">
-                            {t.exploreLinks.map((link, index) => {
-                                const Icon = EXPLORE_ICONS[link.href];
-                                return (
-                                    <BentoCard
-                                        key={link.href}
-                                        name={link.label}
-                                        description={link.description}
-                                        href={link.href}
-                                        cta={t.exploreCta}
-                                        Icon={Icon}
-                                        className={cn(
-                                            "col-span-1",
-                                            index === 0 && "md:row-span-2"
-                                        )}
-                                        background={
-                                            <div
-                                                className={cn(
-                                                    "pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full blur-2xl",
-                                                    index === 0
-                                                        ? "bg-brand-accent/20"
-                                                        : "bg-brand-secondary/15"
-                                                )}
-                                            />
-                                        }
-                                    />
-                                );
-                            })}
-                        </BentoGrid>
+                            {featuredNews && (
+                                <div className="mt-6">
+                                    <FeaturedNewsCard item={featuredNews} />
+                                </div>
+                            )}
+                            <div className="mt-6">
+                                <ActivitiesPhotoCloud />
+                            </div>
+                            <div className="mt-14">
+                                <ActivitiesShowcase activities={activities} />
+                            </div>
+                        </SectionCard>
                     </div>
                 </BlurFade>
             </section>
 
             <section className="relative overflow-hidden">
                 <BlurFade inView inViewMargin="-80px" direction="up" offset={16}>
-                    <CommitteePreview members={committeePreview} />
+                    <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
+                        <SectionCard className="text-center">
+                            <div className="mx-auto max-w-3xl">
+                                <h2 className="font-heading text-2xl font-bold text-brand-primary">
+                                    {t.missionTitle}
+                                </h2>
+                                <p className="mt-4 leading-relaxed text-zinc-700 dark:text-zinc-300">
+                                    {t.missionText}
+                                </p>
+                                <Link
+                                    href="/a-propos"
+                                    className="mt-4 inline-block text-sm font-semibold text-brand-secondary hover:underline"
+                                >
+                                    {t.missionLink}
+                                </Link>
+                            </div>
+                        </SectionCard>
+                    </div>
+                </BlurFade>
+            </section>
+
+            <section className="relative overflow-hidden">
+                <BlurFade inView inViewMargin="-80px" direction="up" offset={16}>
+                    <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
+                        <SectionCard>
+                            <HomeStats />
+                        </SectionCard>
+                    </div>
+                </BlurFade>
+            </section>
+
+            <section className="relative overflow-hidden">
+                <BlurFade inView inViewMargin="-80px" direction="up" offset={16}>
+                    <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
+                        <SectionCard>
+                            <div className="mx-auto max-w-2xl text-center">
+                                <h2 className="font-heading text-3xl font-bold text-brand-primary">
+                                    {t.exploreTitle}
+                                </h2>
+                                <p className="mt-3 text-zinc-600 dark:text-zinc-400">
+                                    {t.exploreSubtitle}
+                                </p>
+                            </div>
+                            <BentoGrid className="mt-12 grid-cols-1 auto-rows-[11rem] gap-4 md:grid-cols-3">
+                                {t.exploreLinks.map((link, index) => {
+                                    const Icon = EXPLORE_ICONS[link.href];
+                                    return (
+                                        <BentoCard
+                                            key={link.href}
+                                            name={link.label}
+                                            description={link.description}
+                                            href={link.href}
+                                            cta={t.exploreCta}
+                                            Icon={Icon}
+                                            className={cn(
+                                                "col-span-1",
+                                                index === 0 && "md:row-span-2"
+                                            )}
+                                            background={
+                                                <div
+                                                    className={cn(
+                                                        "pointer-events-none absolute -right-8 -top-8 h-32 w-32 rounded-full blur-2xl",
+                                                        index === 0
+                                                            ? "bg-brand-accent/20"
+                                                            : "bg-brand-secondary/15"
+                                                    )}
+                                                />
+                                            }
+                                        />
+                                    );
+                                })}
+                            </BentoGrid>
+                        </SectionCard>
+                    </div>
+                </BlurFade>
+            </section>
+
+            <section className="relative overflow-hidden">
+                <BlurFade inView inViewMargin="-80px" direction="up" offset={16}>
+                    <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
+                        <SectionCard>
+                            <CommitteePreview members={committeePreview} />
+                        </SectionCard>
+                    </div>
+                </BlurFade>
+            </section>
+
+            <section className="relative overflow-hidden">
+                <BlurFade inView inViewMargin="-80px" direction="up" offset={16}>
+                    <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
+                        <SectionCard>
+                            <HomeContactPreview />
+                        </SectionCard>
+                    </div>
                 </BlurFade>
             </section>
         </div>

@@ -199,6 +199,151 @@ async function main() {
         },
     });
 
+    // Every title/description below is transcribed (and translated to French)
+    // directly from the text printed on the poster/photo at imageUrl — nothing
+    // here is invented. Where a poster shows no calendar date, `date` is left
+    // null rather than guessing one; the showcase omits the date badge for
+    // those entries instead of displaying a fabricated value. Presenter names
+    // (Mohamed Lemine Adab, El Houssein Eddi Abye) match real ExecutiveMember
+    // records seeded above.
+    const activities: {
+        id: number;
+        type: "ACTIVITY" | "EVENT" | "INITIATIVE" | "WORKSHOP" | "ACHIEVEMENT" | "COMMUNITY_PROJECT";
+        titleFr: string;
+        titleAr: string;
+        descriptionFr: string;
+        descriptionAr: string;
+        imageUrl: string;
+        date: Date | null;
+        order: number;
+    }[] = [
+        {
+            id: 1,
+            type: "WORKSHOP",
+            titleFr: "Révision de physique-chimie pour le Bac Sciences D",
+            titleAr: "مراجعة في الفيزياء والكيمياء لطلاب باكالوريا العلوم D",
+            descriptionFr:
+                "Séance de révision en physique-chimie organisée par la Rabita pour les élèves du Baccalauréat Sciences D, encadrée par l'ingénieur Mohamed Lemine Adab, membre de l'association, sur le groupe WhatsApp de la Rabita.",
+            descriptionAr:
+                "مراجعة في مادة الفيزياء والكيمياء نظمتها رابطة طلاب الحوض الشرقي لصالح طلاب باكالوريا العلوم D، بإشراف عضو الرابطة المهندس محمد الأمين آدب، على مجموعة الرابطة في واتساب.",
+            imageUrl: "/activities/Rv1.jpeg",
+            date: null,
+            order: 1,
+        },
+        {
+            id: 2,
+            type: "WORKSHOP",
+            titleFr: "Révision de mathématiques pour le Bac scientifique",
+            titleAr: "حصة مراجعة في الرياضيات لطلاب الباكالوريا العلمية",
+            descriptionFr:
+                "Séance de révision en mathématiques encadrée par Aslam El Hadj Ahmed, membre du bureau exécutif de la Rabita, le samedi à 20h sur le groupe WhatsApp de l'association.",
+            descriptionAr:
+                "حصة مراجعة في مادة الرياضيات، يشرف عليها عضو المكتب التنفيذي للرابطة اسلم الحاج أحمد، يوم السبت عند الساعة الثامنة مساءً على مجموعة الرابطة في واتساب.",
+            imageUrl: "/activities/Rv2.jpeg",
+            date: null,
+            order: 2,
+        },
+        {
+            id: 3,
+            type: "WORKSHOP",
+            titleFr: "Correction d'exercices de Bac SN : génétique mendélienne",
+            titleAr: "تصحيح تمارين بكالوريا شعبة SN: الوراثة المندلية",
+            descriptionFr:
+                "Correction d'exercices du Baccalauréat SN sur la génétique mendélienne, dans le cadre du 3e Rendez-vous étudiant de la Rabita, animée par Ahmed Mohamed Mohamed Ely le 10 février 2026 à 20h30 sur WhatsApp.",
+            descriptionAr:
+                "حصة تصحيح تمارين بكالوريا شعبة العلوم الطبيعية في محور الوراثة المندلية، ضمن الملتقى الطلابي 3 للرابطة، بإشراف أحمد محمد محمد إيلي، يوم 10 فبراير 2026 الساعة 20:30 عبر واتساب.",
+            imageUrl: "/activities/Rv3.jpeg",
+            date: new Date("2026-02-10T20:30:00"),
+            order: 3,
+        },
+        {
+            id: 4,
+            type: "WORKSHOP",
+            titleFr: "Révision de philosophie pour les filières littéraires",
+            titleAr: "مراجعة في الفلسفة لشعبتي الآداب",
+            descriptionFr:
+                "Séance de révision en philosophie pour les élèves des filières littéraires, dans le cadre du 3e Rendez-vous étudiant de la Rabita, animée par El Houssein Eddi Abye le dimanche à 20h sur WhatsApp.",
+            descriptionAr:
+                "حصة مراجعة في مادة الفلسفة لفائدة طلاب شعبتي الآداب، ضمن الملتقى الطلابي 3 للرابطة، بإشراف الحسين الدي ابي، ليلة الأحد عند الساعة الثامنة مساءً عبر واتساب.",
+            imageUrl: "/activities/Rv4.jpeg",
+            date: null,
+            order: 4,
+        },
+        {
+            id: 5,
+            type: "WORKSHOP",
+            titleFr: "Révision générale de physique pour la filière Sciences",
+            titleAr: "حصة مراجعة عامة في الفيزياء لشعبة العلوم",
+            descriptionFr:
+                "Séance de révision générale en physique pour les élèves du Baccalauréat filière Sciences, à 22h sur les groupes WhatsApp de la Rabita.",
+            descriptionAr:
+                "حصة مراجعة عامة في مادة الفيزياء لصالح طلاب الباكالوريا شعبة العلوم، الساعة العاشرة مساءً على المجموعات الواتسابية للرابطة.",
+            imageUrl: "/activities/Rv5.jpeg",
+            date: null,
+            order: 5,
+        },
+        {
+            id: 6,
+            type: "WORKSHOP",
+            titleFr: "Sciences naturelles pour le Bac D : l'appareil génital féminin",
+            titleAr: "حصة في العلوم الطبيعية لطلاب Bac D: الجهاز التناسلي الأنثوي",
+            descriptionFr:
+                "Session de sciences naturelles pour les élèves du Bac D sur la reproduction et l'appareil génital féminin, animée par Ahmedou Ab, membre de l'association, le 27 novembre à 21h.",
+            descriptionAr:
+                "حصة في مادة العلوم الطبيعية لطلاب الباكالوريا شعبة Bac D حول محور التكاثر والجهاز التناسلي الأنثوي، بإشراف عضو الرابطة احمدو آب، يوم 27 نوفمبر على تمام الساعة التاسعة مساءً.",
+            imageUrl: "/activities/Rv6.jpeg",
+            date: new Date("2025-11-27T21:00:00"),
+            order: 6,
+        },
+        {
+            id: 7,
+            type: "WORKSHOP",
+            titleFr: "Sciences naturelles pour le Bac SN : génétique formelle",
+            titleAr: "حصة في العلوم الطبيعية لطلاب Bac SN: الوراثة الصورية",
+            descriptionFr:
+                "Session de sciences naturelles pour les élèves du Bac SN sur la génétique formelle, animée par Sidi Ethmane Akah, membre de l'association, le 11 novembre à 21h.",
+            descriptionAr:
+                "حصة في مادة العلوم الطبيعية لطلاب الباكالوريا شعبة Bac SN حول محور الوراثة الصورية، بإشراف عضو الرابطة سيدي عثمان أكاه، يوم 11 نوفمبر على تمام الساعة التاسعة مساءً.",
+            imageUrl: "/activities/Rv7.jpeg",
+            date: new Date("2025-11-11T21:00:00"),
+            order: 7,
+        },
+        {
+            id: 8,
+            type: "ACTIVITY",
+            titleFr: "Vie de la Rabita : séance d'étude sur le terrain",
+            titleAr: "حياة الرابطة: حصة دراسية ميدانية",
+            descriptionFr:
+                "Instantané d'une des séances de cours animées par les membres de la Rabita au bénéfice des élèves.",
+            descriptionAr:
+                "لقطة من إحدى الحصص الدراسية التي يقدمها أعضاء رابطة طلاب الحوض الشرقي لفائدة التلاميذ.",
+            imageUrl: "/activities/Rv8.jpeg",
+            date: null,
+            order: 8,
+        },
+        {
+            id: 9,
+            type: "INITIATIVE",
+            titleFr: "Communiqué : lancement des cours d'été à Néma",
+            titleAr: "بيان: انطلاق الدروس الصيفية بالعاصمة النعمة",
+            descriptionFr:
+                "La Rabita a lancé ses cours d'été à Néma pour les élèves préparant les concours nationaux, avec plus de 130 élèves inscrits en filière Sciences, en plus de nombreux élèves des autres filières.",
+            descriptionAr:
+                "أطلقت رابطة طلاب الحوض الشرقي دروسها الصيفية بالعاصمة النعمة لفائدة التلاميذ المقبلين على المسابقات الوطنية، بتسجيل أكثر من 130 طالبا في شعبة العلوم إضافة إلى عدد من تلاميذ الشعب الأخرى.",
+            imageUrl: "/activities/Pub1.jpeg",
+            date: new Date("2026-08-18"),
+            order: 9,
+        },
+    ];
+
+    for (const activity of activities) {
+        await prisma.activity.upsert({
+            where: { id: activity.id },
+            update: activity,
+            create: activity,
+        });
+    }
+
     await prisma.motivationalMessage.upsert({
         where: { id: 1 },
         update: {},
