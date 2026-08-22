@@ -1,6 +1,26 @@
 "use client";
 
-import { useLocale } from "@/lib/locale";
+import {
+    BookOpenCheck,
+    Briefcase,
+    Layers,
+    Rocket,
+    Target,
+    Users,
+    type LucideIcon,
+} from "lucide-react";
+import { UI_TEXT, useLocale } from "@/lib/locale";
+import { SectionCard } from "@/components/SectionCard";
+import { OurValues } from "@/components/OurValues";
+
+const MISSION_ICONS: LucideIcon[] = [
+    BookOpenCheck,
+    Users,
+    Target,
+    Layers,
+    Briefcase,
+    Rocket,
+];
 
 const TEXT = {
     fr: {
@@ -71,50 +91,76 @@ const TEXT = {
 export function AboutContent() {
     const { locale } = useLocale();
     const t = TEXT[locale];
+    const brand = UI_TEXT[locale].brand;
 
     return (
         <div className="mx-auto w-full max-w-4xl px-4 py-10 sm:px-6 sm:py-16">
-            <h1 className="font-heading text-3xl font-bold text-brand-primary">
-                {t.title}
-            </h1>
+            <div className="flex flex-col gap-2.5">
+                <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-brand-secondary">
+                    <span className="h-1.5 w-1.5 rounded-full bg-brand-accent" />
+                    {brand.fullName}
+                </span>
+                <h1 className="font-heading text-3xl font-bold tracking-tight text-brand-primary sm:text-4xl">
+                    {t.title}
+                </h1>
+            </div>
 
-            <section className="mt-10">
-                <h2 className="font-heading text-xl font-semibold text-brand-primary">
-                    {t.aboutTitle}
-                </h2>
-                <p className="mt-3 leading-relaxed text-zinc-700 dark:text-zinc-300">
-                    {t.about}
-                </p>
-            </section>
+            <div className="mt-8 flex flex-col gap-6">
+                <SectionCard>
+                    <h2 className="font-heading text-xl font-bold text-brand-primary sm:text-2xl">
+                        {t.aboutTitle}
+                    </h2>
+                    <p className="mt-3 leading-relaxed text-zinc-700 dark:text-zinc-300">
+                        {t.about}
+                    </p>
+                </SectionCard>
 
-            <section className="mt-10">
-                <h2 className="font-heading text-xl font-semibold text-brand-primary">
-                    {t.historyTitle}
-                </h2>
-                <p className="mt-3 leading-relaxed text-zinc-700 dark:text-zinc-300">
-                    {t.history}
-                </p>
-            </section>
+                <SectionCard>
+                    <h2 className="font-heading text-xl font-bold text-brand-primary sm:text-2xl">
+                        {t.historyTitle}
+                    </h2>
+                    <p className="mt-3 leading-relaxed text-zinc-700 dark:text-zinc-300">
+                        {t.history}
+                    </p>
+                </SectionCard>
 
-            <section className="mt-10">
-                <h2 className="font-heading text-xl font-semibold text-brand-primary">
-                    {t.visionTitle}
-                </h2>
-                <p className="mt-3 leading-relaxed text-zinc-700 dark:text-zinc-300">
-                    {t.vision}
-                </p>
-            </section>
+                <SectionCard>
+                    <h2 className="font-heading text-xl font-bold text-brand-primary sm:text-2xl">
+                        {t.visionTitle}
+                    </h2>
+                    <p className="mt-3 leading-relaxed text-zinc-700 dark:text-zinc-300">
+                        {t.vision}
+                    </p>
+                </SectionCard>
 
-            <section className="mt-10">
-                <h2 className="font-heading text-xl font-semibold text-brand-primary">
-                    {t.missionTitle}
-                </h2>
-                <ul className="mt-3 list-inside list-disc space-y-2 text-zinc-700 dark:text-zinc-300">
-                    {t.missions.map((item) => (
-                        <li key={item}>{item}</li>
-                    ))}
-                </ul>
-            </section>
+                <SectionCard bodyClassName="px-4 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12">
+                    <OurValues />
+                </SectionCard>
+
+                <SectionCard>
+                    <h2 className="font-heading text-xl font-bold text-brand-primary sm:text-2xl">
+                        {t.missionTitle}
+                    </h2>
+                    <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        {t.missions.map((item, index) => {
+                            const Icon = MISSION_ICONS[index % MISSION_ICONS.length];
+                            return (
+                                <div
+                                    key={item}
+                                    className="flex items-start gap-3 rounded-2xl border border-black/[0.06] bg-brand-surface/60 p-4 transition-colors duration-300 hover:bg-brand-surface dark:border-white/10 dark:bg-white/5"
+                                >
+                                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-primary/10 text-brand-primary">
+                                        <Icon className="h-5 w-5" strokeWidth={1.75} />
+                                    </span>
+                                    <p className="pt-1.5 text-sm leading-relaxed text-zinc-700 dark:text-zinc-300">
+                                        {item}
+                                    </p>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </SectionCard>
+            </div>
         </div>
     );
 }

@@ -8,12 +8,14 @@ import { BlurFade } from "@/components/magicui/blur-fade";
 import { BorderBeam } from "@/components/magicui/border-beam";
 import { BentoCard, BentoGrid } from "@/components/magicui/bento-grid";
 import { cn } from "@/lib/utils";
+import { SectionCard } from "@/components/SectionCard";
 import { HomeStats } from "@/app/HomeStats";
 import { CommitteePreview } from "@/app/CommitteePreview";
 import { ActivitiesPhotoCloud } from "@/app/ActivitiesPhotoCloud";
 import { FeaturedNewsCard } from "@/app/FeaturedNewsCard";
 import { ActivitiesShowcase } from "@/app/ActivitiesShowcase";
 import { HomeContactPreview } from "@/app/HomeContactPreview";
+import { OurValues } from "@/components/OurValues";
 
 function CommitteeIcon(props: React.SVGProps<SVGSVGElement>) {
     return (
@@ -68,37 +70,6 @@ const EXPLORE_ICONS: Record<string, React.ElementType> = {
     "/ressources": ResourcesIcon,
 };
 
-// Shared "framed section" container used by every homepage section,
-// including the hero. Rounded corners, a subtle border, a soft brand-tinted
-// shadow, and a thin gold accent bar give each section its own
-// clearly-separated, professional panel on top of the site-wide dot-pattern
-// background, instead of the previous plain alternating-band sections.
-// `bodyClassName` lets a caller keep its own pre-existing padding/spacing
-// rhythm (used by the hero, which has a taller vertical rhythm than the
-// other sections) instead of the shared default.
-function SectionCard({
-    children,
-    className,
-    bodyClassName = "px-5 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14",
-}: {
-    children: React.ReactNode;
-    className?: string;
-    bodyClassName?: string;
-}) {
-    return (
-        <div
-            className={cn(
-                "relative overflow-hidden rounded-3xl border border-black/[0.06] bg-white shadow-[0_1px_2px_rgba(0,0,0,0.04),0_16px_40px_-20px_rgba(28,77,51,0.22)] dark:border-white/10 dark:bg-black",
-                className
-            )}
-        >
-            <div className="h-[3px] w-full bg-gradient-to-r from-transparent via-brand-accent/60 to-transparent" />
-            <div className={bodyClassName}>
-                {children}
-            </div>
-        </div>
-    );
-}
 
 const TEXT = {
     fr: {
@@ -328,6 +299,16 @@ export function HomeContent({
                                     {t.missionLink}
                                 </Link>
                             </div>
+                        </SectionCard>
+                    </div>
+                </BlurFade>
+            </section>
+
+            <section className="relative overflow-hidden">
+                <BlurFade inView inViewMargin="-80px" direction="up" offset={16}>
+                    <div className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
+                        <SectionCard bodyClassName="px-4 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-12">
+                            <OurValues />
                         </SectionCard>
                     </div>
                 </BlurFade>
